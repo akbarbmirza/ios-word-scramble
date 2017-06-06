@@ -92,6 +92,50 @@ class ViewController: UITableViewController {
         // present the alert controller we've made
         present(ac, animated: true)
     }
+    
+    // this method checks if the given answer is valid, add it to the usedWords
+    // array, and update our table to show that word.
+    // for an answer to be valid, it must satisfy the following criteria:
+    //     (1) can the word be made from the given letters?
+    //     (2) has the word been used already?
+    //     (3) is the word a valid English word?
+    func submit(answer: String) {
+        // make our submit function case-insensitive
+        let lowerAnswer = answer.lowercased()
+        
+        // (1) can the word be made from the given letters?
+        if isPossible(word: lowerAnswer) {
+            // (2) has the word been used already?
+            if isOriginal(word: lowerAnswer) {
+                // (3) is the word a valid English word?
+                if isReal(word: lowerAnswer) {
+                    // add the word to the front of the usedWords array
+                    usedWords.insert(answer, at: 0)
+                    
+                    // set the indexPath to the first row
+                    let indexPath = IndexPath(row: 0, section: 0)
+                    // insert a row into our tableView at that indexPath
+                    tableView.insertRows(at: [indexPath], with: .automatic)
+                }
+            }
+        }
+    }
+    
+    // given a word, this function returns true if it can be made from the given
+    // letters
+    func isPossible(word: String) -> Bool {
+        return true
+    }
+    
+    // given a word, this function returns true if it isn't already in usedWords
+    func isOriginal(word: String) -> Bool {
+        return true
+    }
+    
+    // given a word, this function returns true if it is a valid English word
+    func isReal(word: String) -> Bool {
+        return true
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
