@@ -124,17 +124,42 @@ class ViewController: UITableViewController {
     // given a word, this function returns true if it can be made from the given
     // letters
     func isPossible(word: String) -> Bool {
+        // create a temporary word to check against
+        var tempWord = title!.lowercased()
+        
+        // for each letter in our word...
+        for letter in word.characters {
+            // if current letter is found in our tempWord
+            if let pos = tempWord.range(of: String(letter)) {
+                // remove that letter from our tempWord
+                tempWord.remove(at: pos.lowerBound)
+            } else {
+                // otherwise, return false because there's a mismatch
+                return false;
+            }
+        }
+        
+        // if we make it here, then we know that our word is possible
         return true
     }
     
     // given a word, this function returns true if it isn't already in usedWords
     func isOriginal(word: String) -> Bool {
-        return true
+        return !usedWords.contains(word);
     }
     
     // given a word, this function returns true if it is a valid English word
     func isReal(word: String) -> Bool {
-        return true
+        // creating an instance of UITextChecker so that we can check for
+        // mispellings
+        let checker = UITextChecker()
+        // creates a strange for us to be able to check later on
+        let range = NSMakeRange(0, word.utf16.count)
+        // tells us where our mispelling is
+        let mispelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
+        
+        // if no mispelling was found, the word is valid in english
+        return mispelledRange.location == NSNotFound
     }
 
     override func didReceiveMemoryWarning() {
