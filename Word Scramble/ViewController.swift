@@ -25,7 +25,9 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
+        
         // find the path to our start.txt file
         if let startWordsPath = Bundle.main.path(forResource: "start", ofType: "txt") {
             // load the contents of that file
@@ -73,6 +75,22 @@ class ViewController: UITableViewController {
         // reload our tableView
         tableView.reloadData()
 
+    }
+    
+    func promptForAnswer() {
+        // create an alert controller
+        let ac = UIAlertController(title: "Enter Answer", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned self, ac] (action: UIAlertAction) in
+            let answer = ac.textFields![0]
+            self.submit(answer: answer.text!)
+        }
+        
+        ac.addAction(submitAction)
+        
+        // present the alert controller we've made
+        present(ac, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
