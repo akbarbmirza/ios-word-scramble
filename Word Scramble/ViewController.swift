@@ -177,6 +177,12 @@ class ViewController: UITableViewController {
     
     // given a word, this function returns true if it is a valid English word
     func isReal(word: String) -> Bool {
+        
+        // if word length is under 3 letters, we can skip the isReal check
+        if word.characters.count < 3 {
+            return false;
+        }
+        
         // creating an instance of UITextChecker so that we can check for
         // mispellings
         let checker = UITextChecker()
