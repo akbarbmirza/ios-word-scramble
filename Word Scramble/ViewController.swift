@@ -103,10 +103,6 @@ class ViewController: UITableViewController {
         // make our submit function case-insensitive
         let lowerAnswer = answer.lowercased()
         
-        // create variables to hold errors to tell user what went wrong
-        let errorTitle: String
-        let errorMessage: String
-        
         // (1) can the word be made from the given letters?
         if isPossible(word: lowerAnswer) {
             // (2) has the word been used already?
@@ -125,26 +121,19 @@ class ViewController: UITableViewController {
                     return
                 } else {
                     // no, it is not a valid English word
-                    errorTitle = "Word not recognised"
-                    errorMessage = "You can't just make them up, you know!"
+                    showErrorMessage(title: "Word not recognised",
+                                     message: "You can't just make them up, you know!")
                 }
             } else {
                 // yes, the word has already been used
-                errorTitle = "Word used already"
-                errorMessage = "Be more original!"
+                showErrorMessage(title: "Word used already",
+                                 message: "Be more original!")
             }
         } else {
             // no, the word can't be made from the given letters
-            errorTitle = "Word not possible"
-            errorMessage = "You can't spell that word from '\(title!.lowercased())'!"
+            showErrorMessage(title: "Word not possible",
+                             message: "You can't spell that word from '\(title!.lowercased())'!")
         }
-        
-        // create an alert to tell the user about the error
-        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
-        // add the OK action so user can dismiss the alert
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        // present the alert to the user
-        present(ac, animated: true)
         
     }
     
@@ -193,6 +182,16 @@ class ViewController: UITableViewController {
         
         // if no mispelling was found, the word is valid in english
         return mispelledRange.location == NSNotFound
+    }
+    
+    // creates an alert that shows the user the error title and message
+    func showErrorMessage(title: String, message: String) {
+        // create an alert to tell the user about the error
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        // add the OK action so user can dismiss the alert
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        // present the alert to the user
+        present(ac, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
