@@ -103,6 +103,13 @@ class ViewController: UITableViewController {
         // make our submit function case-insensitive
         let lowerAnswer = answer.lowercased()
         
+        // if answer is the same as the title, reject it
+        if lowerAnswer == title?.lowercased() {
+            showErrorMessage(title: "Can't use the same word",
+                             message: "You didn't think it was that easy, did you?")
+            return
+        }
+        
         // (1) can the word be made from the given letters?
         if isPossible(word: lowerAnswer) {
             // (2) has the word been used already?
