@@ -103,6 +103,10 @@ class ViewController: UITableViewController {
         // make our submit function case-insensitive
         let lowerAnswer = answer.lowercased()
         
+        // create variables to hold errors to tell user what went wrong
+        let errorTitle: String
+        let errorMessage: String
+        
         // (1) can the word be made from the given letters?
         if isPossible(word: lowerAnswer) {
             // (2) has the word been used already?
@@ -116,9 +120,32 @@ class ViewController: UITableViewController {
                     let indexPath = IndexPath(row: 0, section: 0)
                     // insert a row into our tableView at that indexPath
                     tableView.insertRows(at: [indexPath], with: .automatic)
+                    
+                    // end the function call
+                    return
+                } else {
+                    // no, it is not a valid English word
+                    errorTitle = "Word not recognised"
+                    errorMessage = "You can't just make them up, you know!"
                 }
+            } else {
+                // yes, the word has already been used
+                errorTitle = "Word used already"
+                errorMessage = "Be more original!"
             }
+        } else {
+            // no, the word can't be made from the given letters
+            errorTitle = "Word not possible"
+            errorMessage = "You can't spell that word from '\(title!.lowercased())'!"
         }
+        
+        // create an alert to tell the user about the error
+        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+        // add the OK action so user can dismiss the alert
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        // present the alert to the user
+        present(ac, animated: true)
+        
     }
     
     // given a word, this function returns true if it can be made from the given
