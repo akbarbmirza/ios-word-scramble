@@ -34,9 +34,13 @@ class ViewController: UITableViewController {
             if let startWords = try? String(contentsOfFile: startWordsPath) {
                 // splitting the contents of that file into an array
                 allWords = startWords.components(separatedBy: "\n")
+            } else {
+                // if contents cannot be properly loaded, load default words
+                loadDefaultWords()
             }
         } else {
-            allWords = ["silkworm"]
+            // if start.txt cannot be found, load default words
+            loadDefaultWords()
         }
 
         startGame()
@@ -61,7 +65,12 @@ class ViewController: UITableViewController {
 
     // Helper Functions
     // -------------------------------------------------------------------------
-
+    
+    // will try to load default words if loading from start.txt fails
+    func loadDefaultWords() {
+        allWords = ["aardvark", "berrying", "coconuts", "desolate", "silkworm"]
+    }
+    
     // will be called every time we want to generate a new word for the player
     // to work with, and will shuffle the allWords array and pick the first item
     func startGame() {
