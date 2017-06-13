@@ -21,6 +21,9 @@ class ViewController: UITableViewController {
     var allWords = [String]()
     // list to hold all words the player has currently used in the game
     var usedWords = [String]()
+    // create a variable to hold the current index of the shuffled words
+    var index = 0
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +45,10 @@ class ViewController: UITableViewController {
             // if start.txt cannot be found, load default words
             loadDefaultWords()
         }
-
+        
+        // shuffle the words array once when the app has loaded
+        allWords = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: allWords) as! [String]
+        // start the game
         startGame()
 
     }
@@ -74,16 +80,14 @@ class ViewController: UITableViewController {
     // will be called every time we want to generate a new word for the player
     // to work with, and will shuffle the allWords array and pick the first item
     func startGame() {
-
-        // shuffle the words array
-        allWords = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: allWords) as! [String]
         // sets title of our view controller to the first word in the array
-        title = allWords[0]
+        title = allWords[index]
+        // increment our index
+        index += 1
         // reset our usedWords array
         usedWords.removeAll(keepingCapacity: true)
         // reload our tableView
         tableView.reloadData()
-
     }
     
     func promptForAnswer() {
@@ -131,7 +135,7 @@ class ViewController: UITableViewController {
                     // set the indexPath to the first row
                     let indexPath = IndexPath(row: 0, section: 0)
                     // insert a row into our tableView at that indexPath
-                    tableView.insertRows(at: [indexPath], with: .automatic)
+                    tableView.insertRows(at: [indexPath], with: .top)
                     
                     // end the function call
                     return
